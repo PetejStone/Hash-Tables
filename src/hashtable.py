@@ -15,7 +15,7 @@ class HashTable:
     def __init__(self, capacity):
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
-
+        self.count = 0
 
     def _hash(self, key):
         '''
@@ -23,6 +23,8 @@ class HashTable:
 
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
+
+
         return hash(key)
 
 
@@ -40,6 +42,7 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         within the storage capacity of the hash table.
         '''
+
         return self._hash(key) % self.capacity
 
 
@@ -50,8 +53,43 @@ class HashTable:
         Hash collisions should be handled with Linked List Chaining.
 
         Fill this in.
+
         '''
-        pass
+      
+        index = self._hash_mod(key)
+        print(f'index: {index}')
+        #if storage is full
+        pair = self.storage[index]
+        final_pair = None
+
+        #checking for multiple pairs, two have same index
+       
+
+        while pair is not None and pair.key != key:
+            final_pair = pair
+            pair = final_pair.next
+        if pair is not None:
+            pair.value = value
+        else:
+            new_pair = LinkedPair(key, value)
+            new_pair.next = self.storage[index]
+            self.storage[index] = new_pair
+
+
+        # if self.count >= self.capacity:
+        #     return self.resize()
+            
+        #shift everything to right
+        #start from end and go backwards to prevent overriding values
+        # for i in range(self.count, index, -1):
+        #     self.storage[i] = self.storage[i-1]
+
+            
+
+        #insert value
+        # self.storage[index] = LinkedPair(key,value)
+        # print(f'Item: {self.storage[index].value}')
+        # self.count += 1
 
 
 
@@ -74,7 +112,13 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        pair = self.storage[index]
+        
+        while pair is not None:
+            if pair.key == key:
+                return pair.value
+            pair = pair.next
 
 
     def resize(self):
@@ -84,8 +128,14 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        #double size
+        self.capacity *= 2
+        new_storage = [None] * self.capacity
 
+        #copy old
+        for i in range(self.count):
+            new_storage[i] = self.storage[i]
+        self.storage = new_storage
 
 
 if __name__ == "__main__":
