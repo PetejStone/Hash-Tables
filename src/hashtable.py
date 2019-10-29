@@ -20,7 +20,6 @@ class HashTable:
     def _hash(self, key):
         '''
         Hash an arbitrary key and return an integer.
-
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
 
@@ -31,7 +30,6 @@ class HashTable:
     def _hash_djb2(self, key):
         '''
         Hash an arbitrary key using DJB2 hash
-
         OPTIONAL STRETCH: Research and implement DJB2
         '''
         pass
@@ -49,31 +47,28 @@ class HashTable:
     def insert(self, key, value):
         '''
         Store the value with the given key.
-
         Hash collisions should be handled with Linked List Chaining.
-
         Fill this in.
-
         '''
       
         index = self._hash_mod(key)
-        print(f'index: {index}')
+        # print(f'index: {index}')
         #if storage is full
         pair = self.storage[index]
         final_pair = None
-
+        ##insert a word 'for'
+        #index is 62
+         #  fp      p
         #checking for multiple pairs, two have same index
        
 
         while pair is not None and pair.key != key:
             final_pair = pair
             pair = final_pair.next
-        if pair is not None:
-            pair.value = value
-        else:
-            new_pair = LinkedPair(key, value)
-            new_pair.next = self.storage[index]
-            self.storage[index] = new_pair
+      
+        new_pair = LinkedPair(key, value)
+        new_pair.next = self.storage[index]
+        self.storage[index] = new_pair
 
 
         # if self.count >= self.capacity:
@@ -96,20 +91,31 @@ class HashTable:
     def remove(self, key):
         '''
         Remove the value stored with the given key.
-
         Print a warning if the key is not found.
-
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        cur = self.storage[index]
+        prev = None
+        # print(f'CURRENT {cur}')
+        while cur.next is not None:
+            prev = cur
+            cur = prev.next
+            if cur.key == key and cur.next is not None:
+                prev.next = cur.next
+                cur = None
+            elif cur.key == key:
+                prev.next = None
+                cur = None
+
+       
+
 
 
     def retrieve(self, key):
         '''
         Retrieve the value stored with the given key.
-
         Returns None if the key is not found.
-
         Fill this in.
         '''
         index = self._hash_mod(key)
@@ -125,7 +131,6 @@ class HashTable:
         '''
         Doubles the capacity of the hash table and
         rehash all key/value pairs.
-
         Fill this in.
         '''
         #double size
