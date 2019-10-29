@@ -16,6 +16,7 @@ class HashTable:
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
         self.count = 0
+        self.head = None
 
     def _hash(self, key):
         '''
@@ -94,21 +95,66 @@ class HashTable:
         Print a warning if the key is not found.
         Fill this in.
         '''
+        # p         
+      #  1   2   3
+        
         index = self._hash_mod(key)
         cur = self.storage[index]
         prev = None
-        # print(f'CURRENT {cur}')
-        while cur.next is not None:
+        # if cur.key == key and cur.next is not None:
+        #     cur = cur.next
+        # elif cur.key == key:
+        #     cur = None
+        # print(f'Current next: {cur.next.value}')
+        # if cur is None:
+        #     print('Error')
+        while cur is not None and cur.key != key:
             prev = cur
             cur = prev.next
-            if cur.key == key and cur.next is not None:
+        if cur is None:
+            print('Error: No node to remove')
+        else:
+            if prev is None:
+                # cur.next = self.storage[index]
+                self.storage[index] = cur.next
+            else:
                 prev.next = cur.next
-                cur = None
-            elif cur.key == key:
-                prev.next = None
-                cur = None
-
+            
+            
+        # elif cur.key == key:
+        #     prev.next = None
+        #     cur = None
+        # cur = cur.next
        
+    #     '''
+    #     Find and remove the node with the given value
+    #     '''
+    # # If we have no head
+    #     if not self.head:
+    #         # print an error and return
+    #         print('Error: value not found')
+    #     # If the head has our value
+    #     elif self.head.value == value:
+    #         # Remove the head by pointing self.head to head.next
+    #         self.head = self.head.next
+    #     # Else 
+    #     else:
+    #         # Keep track of parent node
+    #         parent = self.head
+    #         current = self.head.next
+    #         # walk through the linked list until we find a matching value
+    #         while current:
+    #             if current.value == value:
+    #                 # Delete the node by pointing parent.next to node.next
+    #                 parent.next = current.next
+    #                 return
+    #             parent = parent.next
+    #             current = current.next
+    #                 # return
+
+        # # If we find a matching value, point parent.next to node.next
+        # # If we get to the end and have not foud the value, print error
+        # print('Error: Value not found')
 
 
 
