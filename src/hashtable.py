@@ -15,7 +15,7 @@ class HashTable:
     def __init__(self, capacity):
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
-        self.count = 0
+        self.count = capacity
         self.head = None
 
     def _hash(self, key):
@@ -62,7 +62,7 @@ class HashTable:
          #  fp      p
         #checking for multiple pairs, two have same index
        
-
+        # self.count += 1
         while pair is not None and pair.key != key:
             final_pair = pair
             pair = final_pair.next
@@ -70,7 +70,7 @@ class HashTable:
         new_pair = LinkedPair(key, value)
         new_pair.next = self.storage[index]
         self.storage[index] = new_pair
-
+        
 
         # if self.count >= self.capacity:
         #     return self.resize()
@@ -101,13 +101,7 @@ class HashTable:
         index = self._hash_mod(key)
         cur = self.storage[index]
         prev = None
-        # if cur.key == key and cur.next is not None:
-        #     cur = cur.next
-        # elif cur.key == key:
-        #     cur = None
-        # print(f'Current next: {cur.next.value}')
-        # if cur is None:
-        #     print('Error')
+   
         while cur is not None and cur.key != key:
             prev = cur
             cur = prev.next
@@ -121,41 +115,7 @@ class HashTable:
                 prev.next = cur.next
             
             
-        # elif cur.key == key:
-        #     prev.next = None
-        #     cur = None
-        # cur = cur.next
-       
-    #     '''
-    #     Find and remove the node with the given value
-    #     '''
-    # # If we have no head
-    #     if not self.head:
-    #         # print an error and return
-    #         print('Error: value not found')
-    #     # If the head has our value
-    #     elif self.head.value == value:
-    #         # Remove the head by pointing self.head to head.next
-    #         self.head = self.head.next
-    #     # Else 
-    #     else:
-    #         # Keep track of parent node
-    #         parent = self.head
-    #         current = self.head.next
-    #         # walk through the linked list until we find a matching value
-    #         while current:
-    #             if current.value == value:
-    #                 # Delete the node by pointing parent.next to node.next
-    #                 parent.next = current.next
-    #                 return
-    #             parent = parent.next
-    #             current = current.next
-    #                 # return
-
-        # # If we find a matching value, point parent.next to node.next
-        # # If we get to the end and have not foud the value, print error
-        # print('Error: Value not found')
-
+    
 
 
     def retrieve(self, key):
@@ -179,14 +139,18 @@ class HashTable:
         rehash all key/value pairs.
         Fill this in.
         '''
-        #double size
-        self.capacity *= 2
-        new_storage = [None] * self.capacity
 
-        #copy old
-        for i in range(self.count):
-            new_storage[i] = self.storage[i]
-        self.storage = new_storage
+        self.capacity *= 2
+        new_storage = HashTable(self.capacity)
+        for node in self.storage:
+            current = node
+            while current is not None:
+                new_storage.insert(current.key, current.value)
+                current = current.next
+        #self = new_storage # Would this work?
+        self.storage = new_storage.storage
+        # self.capacity = new_storage.capacity
+        
 
 
 if __name__ == "__main__":
