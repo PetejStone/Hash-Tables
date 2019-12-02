@@ -118,7 +118,7 @@ class HashTable:
         # p         
       #  1   2   3
         
-        #set index to the hash
+        ##set index to the hash
         index = self._hash_mod(key)
 
         #set the cur variable to the current index
